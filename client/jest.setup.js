@@ -26,18 +26,49 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 })
 
-// Mock localStorage
-const localStorageMock = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
-  clear: jest.fn(),
-}
-global.localStorage = localStorageMock
+// Mock localStorage with jest.fn() for proper spy support
+const localStorageMock = (() => {
+  let store = {}
+  
+  return {
+    getItem: jest.fn((key) => store[key] || null),
+    setItem: jest.fn((key, value) => {
+      store[key] = value.toString()
+    }),
+    removeItem: jest.fn((key) => {
+      delete store[key]
+    }),
+    clear: jest.fn(() => {
+      store = {}
+    }),
+  }
+})()
+
+Object.defineProperty(global, 'localStorage', {
+  value: localStorageMock,
+  writable: true,
+})
+
+// Set React act environment
+global.IS_REACT_ACT_ENVIRONMENT = true
 
 // Suppress console errors in tests (optional)
-global.console = {
-  ...console,
-  error: jest.fn(),
-  warn: jest.fn(),
-}
+const originalError = console.error
+beforeAll(() => {
+  console.error = (...args) => {
+    if (
+      typeof args[0] === 'string' &&
+      (args[0].includes('Warning: ReactDOM.render') ||
+       args[0].includes('Warning: useLayoutEffect') ||
+       args[0].includes('Warning: An update to') ||
+       args[0].includes('Not implemented: HTMLFormElement.prototype.submit'))
+    ) {
+      return
+    }
+    originalError.call(console, ...args)
+  }
+})
+
+afterAll(() => {
+  console.error = originalError
+})
