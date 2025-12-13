@@ -80,3 +80,20 @@ class TestUserLogin:
         })
 
         assert response.status_code == 422
+
+
+class TestProtectedEndpoints:
+    """Test cases for authentication protection."""
+    
+    def test_access_protected_endpoint_without_token(self, client):
+        response = client.get("/api/v1/sweets")
+        assert response.status_code == 401
+    
+    def test_access_protected_endpoint_with_invalid_token(self, client):
+        headers = {"Authorization": "Bearer invalid_token"}
+        response = client.get("/api/v1/sweets", headers=headers)
+        assert response.status_code == 401
+    
+    def test_access_protected_endpoint_with_valid_token(self, client, auth_headers):
+        response = client.get("/api/v1/sweets", headers=auth_headers)
+        assert response.status_code == 200
