@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.database import create_tables
 from app.core.config import get_settings
+from app.api.main import api_router
 
 settings = get_settings()
 
@@ -33,3 +34,5 @@ def root():
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}
+
+app.include_router(api_router)
