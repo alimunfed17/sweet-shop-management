@@ -1,6 +1,6 @@
 import { useAuthStore } from '@/store/authStore';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { Candy, LogOut, User, Shield } from 'lucide-react';
 import Button from "@/components/ui/Button";
 
