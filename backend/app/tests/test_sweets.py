@@ -155,6 +155,35 @@ class TestUpdateSweet:
 
         assert response.status_code == 401
 
+class TestDeleteSweet:
+    """Test cases for deleting sweets."""
+    
+    def test_delete_sweet_as_admin(self, client, admin_headers, test_sweet_data):
+        create_response = client.post("/api/v1/sweets", json=test_sweet_data, headers=admin_headers)
+        sweet_id = create_response.json()["id"]
+        
+        response = client.delete(f"/api/v1/sweets/{sweet_id}", headers=admin_headers)
+
+        assert response.status_code == 200
+        
+        get_response = client.get("/api/v1/sweets", headers=admin_headers)
+
+        assert len(get_response.json()) == 0
+    
+    def test_delete_sweet_as_regular_user(self, client, auth_headers, test_sweet_data):
+        create_response = client.post("/api/v1/sweets", json=test_sweet_data, headers=auth_headers)
+        sweet_id = create_response.json()["id"]
+        
+        response = client.delete(f"/api/v1/sweets/{sweet_id}", headers=auth_headers)
+        
+        assert response.status_code == 403
+    
+    def test_delete_nonexistent_sweet(self, client, admin_headers):
+        response = client.delete("/api/v1/sweets/99999", headers=admin_headers)
+
+        assert response.status_code == 404
+
+
 class TestPurchaseSweet:
     """Test cases for purchasing sweets."""
     
