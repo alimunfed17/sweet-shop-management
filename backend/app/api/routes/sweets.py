@@ -1,11 +1,12 @@
 from typing import List, Optional
-from fastapi import APIRouter, Depends, status, Query
+from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.models.user import User
-from app.schemas.sweets import SweetCreate, SweetUpdate, SweetResponse, QuantityUpdate
+from app.schemas.sweets import SweetCreate, SweetUpdate, SweetResponse
 from app.core.deps import get_current_user
+from app.models.sweets import Sweet
 
 router = APIRouter(prefix="/sweets", tags=["sweets"])
 
@@ -16,14 +17,21 @@ def create_sweet(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    pass
+    db_sweet = Sweet(**sweet.model_dump())
+    db.add(db_sweet)
+    db.commit()
+    db.refresh(db_sweet)
+    return db_sweet
+
 
 @router.get("", response_model=List[SweetResponse])
 def get_sweets(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-   pass
+    sweets = db.query(Sweet).all()
+    return sweets
+
 
 @router.get("/search", response_model=List[SweetResponse])
 def search_sweets(
@@ -34,7 +42,22 @@ def search_sweets(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-   pass
+    query = db.query(Sweet)
+    
+    if name:
+        query = query.filter(Sweet.name.ilike(f"%{name}%"))
+    
+    if category:
+        query = query.filter(Sweet.category.ilike(f"%{category}%"))
+    
+    if min_price is not None:
+        query = query.filter(Sweet.price >= min_price)
+    
+    if max_price is not None:
+        query = query.filter(Sweet.price <= max_price)
+    
+    sweets = query.all()
+    return sweets
 
 
 @router.put("/{sweet_id}", response_model=SweetResponse)
@@ -44,5 +67,18 @@ def update_sweet(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    pass
+    db_sweet = db.query(Sweet).filter(Sweet.id == sweet_id).first()
+    if not db_sweet:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Sweet not found"
+        )
+    
+    update_data = sweet_update.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(db_sweet, field, value)
+    
+    db.commit()
+    db.refresh(db_sweet)
+    return db_sweet
 
