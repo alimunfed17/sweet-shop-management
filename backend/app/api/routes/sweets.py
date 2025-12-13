@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.models.user import User
 from app.schemas.sweets import QuantityUpdate, SweetCreate, SweetUpdate, SweetResponse
-from app.core.deps import get_current_user
+from app.core.deps import get_current_admin_user, get_current_user
 from app.models.sweets import Sweet
 
 router = APIRouter(prefix="/sweets", tags=["sweets"])
@@ -81,6 +81,24 @@ def update_sweet(
     db.commit()
     db.refresh(db_sweet)
     return db_sweet
+
+
+@router.delete("/{sweet_id}", status_code=status.HTTP_200_OK)
+def delete_sweet(
+    sweet_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin_user)
+):
+    db_sweet = db.query(Sweet).filter(Sweet.id == sweet_id).first()
+    if not db_sweet:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Sweet not found"
+        )
+    
+    db.delete(db_sweet)
+    db.commit()
+    return {"message": "Sweet deleted successfully"}
 
 
 @router.post("/{sweet_id}/purchase", response_model=SweetResponse)
