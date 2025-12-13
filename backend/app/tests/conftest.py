@@ -52,19 +52,18 @@ def test_user_data():
 
 
 @pytest.fixture
-def test_admin_data():
+def test_sweet_data():
     return {
-        "email": "admin@example.com",
-        "password": "adminpassword123",
-        "full_name": "Admin User",
-        "is_admin": True
+        "name": "Chocolate Bar",
+        "category": "Chocolate",
+        "price": 2.99,
+        "quantity": 100
     }
 
 
 @pytest.fixture
 def auth_headers(client, test_user_data):
     client.post("/api/v1/auth/register", json=test_user_data)
-
     response = client.post("/api/v1/auth/login", json={
         "email": test_user_data["email"],
         "password": test_user_data["password"]
