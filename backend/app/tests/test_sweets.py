@@ -155,3 +155,35 @@ class TestUpdateSweet:
 
         assert response.status_code == 401
 
+class TestPurchaseSweet:
+    """Test cases for purchasing sweets."""
+    
+    def test_purchase_sweet_success(self, client, auth_headers, test_sweet_data):
+        create_response = client.post("/api/v1/sweets", json=test_sweet_data, headers=auth_headers)
+        sweet_id = create_response.json()["id"]
+        initial_quantity = test_sweet_data["quantity"]
+        
+        response = client.post(f"/api/v1/sweets/{sweet_id}/purchase", json={"quantity": 5}, headers=auth_headers)
+        
+        assert response.status_code == 200
+        data = response.json()
+
+        assert data["quantity"] == initial_quantity - 5
+    
+    def test_purchase_more_than_available(self, client, auth_headers, test_sweet_data):
+        test_sweet_data["quantity"] = 10
+        create_response = client.post("/api/v1/sweets", json=test_sweet_data, headers=auth_headers)
+        sweet_id = create_response.json()["id"]
+        
+        response = client.post(f"/api/v1/sweets/{sweet_id}/purchase", json={"quantity": 15}, headers=auth_headers)
+
+        assert response.status_code == 400
+        assert "insufficient" in response.json()["detail"].lower()
+    
+    def test_purchase_invalid_quantity(self, client, auth_headers, test_sweet_data):
+        create_response = client.post("/api/v1/sweets", json=test_sweet_data, headers=auth_headers)
+        sweet_id = create_response.json()["id"]
+        
+        response = client.post(f"/api/v1/sweets/{sweet_id}/purchase", json={"quantity": -5}, headers=auth_headers)
+
+        assert response.status_code == 422
