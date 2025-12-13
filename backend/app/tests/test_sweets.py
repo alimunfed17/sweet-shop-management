@@ -216,3 +216,40 @@ class TestPurchaseSweet:
         response = client.post(f"/api/v1/sweets/{sweet_id}/purchase", json={"quantity": -5}, headers=auth_headers)
 
         assert response.status_code == 422
+
+
+class TestRestockSweet:
+    """Test cases for restocking sweets."""
+    
+    def test_restock_sweet_as_admin(self, client, admin_headers, test_sweet_data):
+        create_response = client.post("/api/v1/sweets", json=test_sweet_data, headers=admin_headers)
+        sweet_id = create_response.json()["id"]
+        initial_quantity = test_sweet_data["quantity"]
+        
+        response = client.post(f"/api/v1/sweets/{sweet_id}/restock", json={"quantity": 50}, headers=admin_headers)
+
+        assert response.status_code == 200
+        data = response.json()
+
+        assert data["quantity"] == initial_quantity + 50
+    
+    def test_restock_sweet_as_regular_user(self, client, auth_headers, test_sweet_data):
+        create_response = client.post("/api/v1/sweets", json=test_sweet_data, headers=auth_headers)
+        sweet_id = create_response.json()["id"]
+        
+        response = client.post(f"/api/v1/sweets/{sweet_id}/restock", json={"quantity": 50}, headers=auth_headers)
+
+        assert response.status_code == 403
+    
+    def test_restock_nonexistent_sweet(self, client, admin_headers):
+        response = client.post("/api/v1/sweets/99999/restock", json={"quantity": 50}, headers=admin_headers)
+
+        assert response.status_code == 404
+    
+    def test_restock_invalid_quantity(self, client, admin_headers, test_sweet_data):
+        create_response = client.post("/api/v1/sweets", json=test_sweet_data, headers=admin_headers)
+        sweet_id = create_response.json()["id"]
+        
+        response = client.post(f"/api/v1/sweets/{sweet_id}/restock", json={"quantity": -10}, headers=admin_headers)
+
+        assert response.status_code == 422
