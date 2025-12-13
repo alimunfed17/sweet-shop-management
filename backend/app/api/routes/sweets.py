@@ -125,3 +125,13 @@ def purchase_sweet(
     db.commit()
     db.refresh(db_sweet)
     return db_sweet
+
+
+@router.post("/{sweet_id}/restock", response_model=SweetResponse)
+def restock_sweet(
+    sweet_id: int,
+    quantity: QuantityUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin_user)
+):
+    pass
