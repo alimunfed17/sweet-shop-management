@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.models.user import User
-from app.schemas.sweets import SweetCreate, SweetUpdate, SweetResponse
+from app.schemas.sweets import QuantityUpdate, SweetCreate, SweetUpdate, SweetResponse
 from app.core.deps import get_current_user
 from app.models.sweets import Sweet
 
@@ -82,3 +82,12 @@ def update_sweet(
     db.refresh(db_sweet)
     return db_sweet
 
+
+@router.post("/{sweet_id}/purchase", response_model=SweetResponse)
+def purchase_sweet(
+    sweet_id: int,
+    quantity: QuantityUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    pass
