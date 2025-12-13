@@ -45,7 +45,6 @@ class ApiClient {
     );
   }
 
-  // Auth endpoints
   async register(data: RegisterData): Promise<User> {
     const response = await this.client.post<User>('/api/v1/auth/register', data);
     return response.data;
@@ -56,7 +55,12 @@ class ApiClient {
     return response.data;
   }
 
-  // Sweets endpoints
+  async getCurrentUser(): Promise<User> {
+    const response = await this.client.get<User>('/api/v1/auth/me');
+    return response.data;
+  }
+
+
   async getSweets(): Promise<Sweet[]> {
     const response = await this.client.get<Sweet[]>('/api/v1/sweets');
     return response.data;

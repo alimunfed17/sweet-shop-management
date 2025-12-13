@@ -26,15 +26,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       
       localStorage.setItem('token', token);
       
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      const userEmail = payload.sub;
-      
-      const user: User = {
-        id: 0, 
-        email: userEmail,
-        full_name: userEmail.split('@')[0],
-        is_admin: false, 
-      };
+      const user = await api.getCurrentUser();
       
       localStorage.setItem('user', JSON.stringify(user));
       
