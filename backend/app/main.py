@@ -1,8 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.core.database import create_tables
+from app.core.config import get_settings
 
-app = FastAPI()
+settings = get_settings()
+
+app = FastAPI(
+    title=settings.app_name,
+    debug=settings.debug
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -12,13 +19,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.on_event("startup")
+def startup_event():
+    create_tables()
+
 @app.get("/")
 def root():
     return {
         "message": "Welcome to Sweets Management API",
         "docs": "/docs"
     }
-
 
 @app.get("/health")
 def health_check():
