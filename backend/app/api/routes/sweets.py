@@ -90,4 +90,20 @@ def purchase_sweet(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    pass
+    db_sweet = db.query(Sweet).filter(Sweet.id == sweet_id).first()
+    if not db_sweet:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Sweet not found"
+        )
+    
+    if db_sweet.quantity < quantity.quantity:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Insufficient quantity in stock"
+        )
+    
+    db_sweet.quantity -= quantity.quantity
+    db.commit()
+    db.refresh(db_sweet)
+    return db_sweet
