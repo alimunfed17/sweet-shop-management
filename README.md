@@ -9,8 +9,7 @@ A modern, full-stack web application for managing a sweet shop inventory with us
 ![Tests](https://img.shields.io/badge/tests-130%2B%20passing-brightgreen.svg)
 ![Coverage](https://img.shields.io/badge/coverage-85%25-brightgreen.svg)
 
-
-## 📋 Table of Contents
+## Table of Contents
 
 - [Overview](#overview)
 - [Features](#features)
@@ -22,26 +21,24 @@ A modern, full-stack web application for managing a sweet shop inventory with us
 - [API Documentation](#api-documentation)
 - [Deployment](#deployment)
 - [My AI Usage](#my-ai-usage)
-- [Challenges & Solutions](#challenges--solutions)
-- [Future Enhancements](#future-enhancements)
 - [License](#license)
 
-## 🎯 Overview
+## Overview
 
 Sweet Shop Management System is a comprehensive full-stack application that enables sweet shop owners to manage their inventory while providing customers with an intuitive interface to browse and purchase sweets. The system features secure JWT authentication, role-based access control, and a modern responsive design.
 
 ### Key Highlights
 
-- 🔐 **Secure Authentication** - JWT-based with password hashing
-- 👥 **Role-Based Access** - Admin and regular user roles
-- 🛒 **E-commerce Features** - Browse, search, filter, and purchase
-- 📦 **Inventory Management** - Add, edit, delete, and restock (admin)
-- 🧪 **Comprehensive Testing** - 130+ tests with 85%+ coverage
-- 🐳 **Docker Ready** - One-command deployment
-- 📱 **Fully Responsive** - Works on all devices
-- ⚡ **Modern Tech Stack** - FastAPI + Next.js + PostgreSQL
+- **Secure Authentication** - JWT-based with password hashing
+- **Role-Based Access** - Admin and regular user roles
+- **E-commerce Features** - Browse, search, filter, and purchase
+- **Inventory Management** - Add, edit, delete, and restock (admin)
+- **Comprehensive Testing** - 130+ tests with 85%+ coverage
+- **Docker Ready** - One-command deployment
+- **Fully Responsive** - Works on all devices
+- **Modern Tech Stack** - FastAPI + Next.js + PostgreSQL
 
-## ✨ Features
+## Features
 
 ### For All Users
 
@@ -89,7 +86,7 @@ Sweet Shop Management System is a comprehensive full-stack application that enab
   - Separate UI from regular users
   - Quick access to all management features
 
-## 🛠 Technologies Used
+## Technologies Used
 
 ### Backend
 - **Python 3.10+** - Programming language
@@ -98,9 +95,8 @@ Sweet Shop Management System is a comprehensive full-stack application that enab
 - **SQLAlchemy** - ORM for database operations
 - **Pydantic** - Data validation
 - **python-jose** - JWT token handling
-- **passlib** - Password hashing (bcrypt)
+- **passlib** - Password hashing (argon2)
 - **pytest** - Testing framework
-- **Alembic** - Database migrations (optional)
 
 ### Frontend
 - **Next.js 14** - React framework
@@ -119,7 +115,7 @@ Sweet Shop Management System is a comprehensive full-stack application that enab
 - **Docker Compose** - Multi-container orchestration
 - **Git** - Version control
 
-## 🏗 Architecture
+## Architecture
 
 ### System Architecture
 
@@ -189,45 +185,11 @@ CREATE TABLE sweets (
 - `POST /api/v1/sweets/:id/purchase` - Purchase sweet (protected)
 - `POST /api/v1/sweets/:id/restock` - Restock sweet (admin only)
 
-## 📸 Screenshots
+## Screenshots
 
-### Login Page
-![Login Page](./screenshots/01-login.png)
-*Secure login with email and password validation*
+- The screenshots of the application are present in [SCREENSHOTS.md](./SCREENSHOTS.md).
 
-### Registration Page
-![Registration](./screenshots/02-register.png)
-*User registration with form validation*
-
-### User Dashboard
-![User Dashboard](./screenshots/03-user-dashboard.png)
-*Browse sweets with search and filter options*
-
-### Search & Filter
-![Search Filter](./screenshots/05-search-filter.png)
-*Advanced filtering by name, category, and price range*
-
-### Purchase Modal
-![Purchase](./screenshots/08-purchase.png)
-*Quantity selection with real-time total calculation*
-
-### Admin Dashboard
-![Admin Dashboard](./screenshots/04-admin-dashboard.png)
-*Admin view with management buttons (shield icon and admin badge visible)*
-
-### Add Sweet Modal
-![Add Sweet](./screenshots/06-add-sweet.png)
-*Admin interface to add new sweets with validation*
-
-### Edit Sweet Modal
-![Edit Sweet](./screenshots/07-edit-sweet.png)
-*Admin interface to update existing sweets*
-
-### Mobile Responsive
-![Mobile View](./screenshots/09-mobile-view.png)
-*Fully responsive design works perfectly on mobile devices*
-
-## 🚀 Setup Instructions
+## Setup Instructions
 
 ### Prerequisites
 
@@ -249,11 +211,11 @@ This is the **easiest way** to run the application:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/yourusername/sweet-shop-management.git
+git clone https://github.com/alimunfed17/sweet-shop-management.git
 cd sweet-shop-management
 
 # 2. Start all services with one command
-docker-compose -f docker-compose.fullstack.yml up -d
+docker-compose -f docker-compose.yml up -d
 
 # 3. Access the application
 # Frontend: http://localhost:3000
@@ -264,14 +226,20 @@ docker-compose -f docker-compose.fullstack.yml up -d
 **Default Admin Credentials:**
 ```
 Email: admin@example.com
-Password: admin123
+Password: adminpassword
+```
+
+**Default User Credentials:**
+```
+Email: user@example.com
+Password: user123
 ```
 
 ⚠️ **Important**: Change the admin password after first login!
 
 **To stop the application:**
 ```bash
-docker-compose -f docker-compose.fullstack.yml down
+docker-compose -f docker-compose.yml down
 ```
 
 ### Option 2: Manual Setup
@@ -325,8 +293,8 @@ cd frontend
 npm install
 
 # 3. Setup environment variables
-cp .env.local.example .env.local
-# Edit .env.local if needed (default: http://localhost:8000)
+cp .env.example .env
+# Edit .env if needed (default: http://localhost:8000)
 
 # 4. Run development server
 npm run dev
@@ -350,7 +318,7 @@ DEBUG=False
 NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
-## 🧪 Testing
+## Testing
 
 This project follows **Test-Driven Development (TDD)** with comprehensive test coverage.
 
@@ -413,26 +381,26 @@ Detailed test reports are available in the `test-reports/` directory:
 ### What's Tested
 
 #### Backend Tests
-- ✅ User registration and validation
-- ✅ User login and JWT token generation
-- ✅ Protected endpoint authentication
-- ✅ Sweet CRUD operations
-- ✅ Search and filtering functionality
-- ✅ Purchase and restock operations
-- ✅ Admin-only authorization
-- ✅ Error handling and edge cases
+- User registration and validation
+- User login and JWT token generation
+- Protected endpoint authentication
+- Sweet CRUD operations
+- Search and filtering functionality
+- Purchase and restock operations
+- Admin-only authorization
+- Error handling and edge cases
 
 #### Frontend Tests
-- ✅ UI components (Button, Input, Card, Modal)
-- ✅ Feature components (SweetCard, SearchFilter, SweetForm)
-- ✅ Page rendering and navigation
-- ✅ User interactions and events
-- ✅ Form validation
-- ✅ State management (Auth Store)
-- ✅ API client functionality
-- ✅ Utility functions
+- UI components (Button, Input, Card, Modal)
+- Feature components (SweetCard, SearchFilter, SweetForm)
+- Page rendering and navigation
+- User interactions and events
+- Form validation
+- State management (Auth Store)
+- API client functionality
+- Utility functions
 
-## 📚 API Documentation
+## API Documentation
 
 ### Interactive API Documentation
 
@@ -445,7 +413,7 @@ FastAPI provides automatic interactive API documentation:
 
 #### Register User
 ```bash
-curl -X POST "http://localhost:8000/api/auth/register" \
+curl -X POST "http://localhost:8000/api/v1/auth/register" \
   -H "Content-Type: application/json" \
   -d '{
     "email": "user@example.com",
@@ -456,7 +424,7 @@ curl -X POST "http://localhost:8000/api/auth/register" \
 
 #### Login
 ```bash
-curl -X POST "http://localhost:8000/api/auth/login" \
+curl -X POST "http://localhost:8000/api/v1/auth/login" \
   -H "Content-Type: application/json" \
   -d '{
     "email": "user@example.com",
@@ -467,13 +435,13 @@ curl -X POST "http://localhost:8000/api/auth/login" \
 #### Get Sweets
 ```bash
 TOKEN="your-jwt-token"
-curl -X GET "http://localhost:8000/api/sweets" \
+curl -X GET "http://localhost:8000/api/v1/sweets" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
 #### Create Sweet (Admin)
 ```bash
-curl -X POST "http://localhost:8000/api/sweets" \
+curl -X POST "http://localhost:8000/api/v1/sweets" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -484,273 +452,28 @@ curl -X POST "http://localhost:8000/api/sweets" \
   }'
 ```
 
-## 🚢 Deployment
+## Deployment
 
-### Docker Production Deployment
+#### Docker Production Deployment
 
 ```bash
 # Build images
-docker-compose -f docker-compose.fullstack.yml build
+docker-compose -f docker-compose.yml build
 
 # Start in production mode
-docker-compose -f docker-compose.fullstack.yml up -d
+docker-compose -f docker-compose.yml up -d
 
 # View logs
-docker-compose -f docker-compose.fullstack.yml logs -f
+docker-compose -f docker-compose.yml logs -f
 
 # Stop services
-docker-compose -f docker-compose.fullstack.yml down
+docker-compose -f docker-compose.yml down
 ```
 
-### Recommended Hosting Platforms
+## My AI Usage
 
-**Frontend:**
-- Vercel (recommended for Next.js)
-- Netlify
-- AWS Amplify
+The document consists of my ai usage, please go through the docuemnt [MY_AI_USAGE](./MY_AI_USAGE.md).
 
-**Backend:**
-- Heroku
-- Railway
-- DigitalOcean App Platform
-- AWS EC2 with Docker
+## License
 
-**Database:**
-- AWS RDS PostgreSQL
-- DigitalOcean Managed Database
-- Supabase
-- Heroku Postgres
-
-## 🤖 My AI Usage
-
-### Overview
-
-This project was developed with assistance from AI tools, primarily Claude (Anthropic). Below is a transparent account of how AI was used in the development process.
-
-### AI Tools Used
-
-- **Claude (Anthropic)** - Primary AI assistant
-  - Version: Claude 3.5 Sonnet
-  - Platform: Claude.ai
-
-### How AI Was Used
-
-#### 1. Initial Setup & Architecture (20% AI, 80% Human)
-- **AI Helped With:**
-  - Suggesting project structure
-  - Recommending best practices for FastAPI + Next.js integration
-  - Docker configuration templates
-  
-- **I Did Myself:**
-  - Final architectural decisions
-  - Technology stack selection
-  - Database schema design
-  - Overall project planning
-
-#### 2. Backend Development (30% AI, 70% Human)
-- **AI Helped With:**
-  - Boilerplate code for FastAPI routes
-  - SQLAlchemy model definitions
-  - JWT authentication setup examples
-  - Pytest test structure suggestions
-  
-- **I Did Myself:**
-  - Business logic implementation
-  - Custom validation rules
-  - Error handling strategies
-  - Database query optimization
-  - Complete test writing (following TDD)
-  - Security configurations
-
-#### 3. Frontend Development (25% AI, 75% Human)
-- **AI Helped With:**
-  - React component structure suggestions
-  - Tailwind CSS class combinations
-  - TypeScript type definitions
-  - Form validation patterns
-  
-- **I Did Myself:**
-  - UI/UX design decisions
-  - Component architecture
-  - State management logic
-  - User flow implementation
-  - Responsive design breakpoints
-  - Animation and interaction design
-  - Complete test suite (Jest + RTL)
-
-#### 4. Testing (10% AI, 90% Human)
-- **AI Helped With:**
-  - Test structure templates
-  - Mock setup examples
-  
-- **I Did Myself:**
-  - **ALL test cases written manually**
-  - Test scenarios identification
-  - Edge case discovery
-  - Coverage analysis
-  - Test debugging
-  - TDD methodology application
-
-#### 5. Documentation (40% AI, 60% Human)
-- **AI Helped With:**
-  - Documentation structure templates
-  - README formatting suggestions
-  - Example code blocks
-  
-- **I Did Myself:**
-  - Project description
-  - Setup instructions (tested personally)
-  - Screenshots and descriptions
-  - Troubleshooting guides
-  - This AI usage section
-  - Custom documentation for features
-
-#### 6. Debugging & Problem Solving (15% AI, 85% Human)
-- **AI Helped With:**
-  - Error message interpretation
-  - Suggesting debugging approaches
-  - Stack trace analysis
-  
-- **I Did Myself:**
-  - Actual debugging process
-  - Root cause analysis
-  - Solution implementation
-  - Testing fixes
-  - Performance optimization
-
-### What I Learned from AI Assistance
-
-✅ **Benefits:**
-- Faster boilerplate generation
-- Quick reference for syntax
-- Alternative approach suggestions
-- Documentation examples
-
-❌ **Limitations I Discovered:**
-- AI-generated code often needs significant modification
-- Business logic requires human understanding
-- Testing scenarios need human insight
-- AI doesn't understand project-specific context
-- Design decisions must be made by developer
-
-### My Development Process
-
-1. **Plan** - I design the feature and write requirements
-2. **Research** - Use AI for syntax/library questions when needed
-3. **Implement** - Write code myself, sometimes referencing AI suggestions
-4. **Test** - Write all tests manually following TDD principles
-5. **Review** - Analyze and refactor code myself
-6. **Document** - Write documentation with some AI formatting help
-
-### What I Built Completely Myself
-
-- ✅ All business logic
-- ✅ All database queries
-- ✅ All test cases (130+ tests)
-- ✅ All UI/UX design decisions
-- ✅ All security implementations
-- ✅ All API endpoint logic
-- ✅ All state management
-- ✅ Project architecture decisions
-- ✅ This README content
-
-### Honesty Statement
-
-I have been transparent about AI usage in this project. The AI served as a helpful reference tool and coding assistant, but the architecture, logic, testing, and implementation decisions were made by me. All code was reviewed, understood, and often significantly modified from any AI suggestions.
-
-**I can explain every part of this codebase because I built it.**
-
-## 💪 Challenges & Solutions
-
-### Challenge 1: Admin User Detection
-
-**Problem:** Admin features weren't showing even for admin users.
-
-**Root Cause:** Frontend wasn't fetching actual user admin status from backend.
-
-**Solution:** 
-- Added `GET /api/auth/me` endpoint to backend
-- Modified frontend login flow to fetch complete user data
-- Ensured `is_admin` flag is properly set from database
-
-**Learning:** Always verify data flow between frontend and backend.
-
-### Challenge 2: Testing Async Operations
-
-**Problem:** Difficulty testing asynchronous API calls in React components.
-
-**Solution:**
-- Used `waitFor` from React Testing Library
-- Properly mocked API responses
-- Used `act()` for state updates
-
-**Learning:** Understanding async testing patterns is crucial.
-
-### Challenge 3: Docker Networking
-
-**Problem:** Frontend couldn't connect to backend in Docker.
-
-**Solution:**
-- Configured proper service names in docker-compose
-- Set correct environment variables
-- Added health checks
-
-**Learning:** Docker networking requires careful configuration.
-
-## 🚀 Future Enhancements
-
-Potential improvements for future versions:
-
-1. **User Features**
-   - Shopping cart functionality
-   - Order history
-   - Favorites/wishlist
-   - User profile management
-   - Email notifications
-
-2. **Admin Features**
-   - Sales analytics dashboard
-   - Inventory reports
-   - User management
-   - Bulk import/export
-   - Advanced search filters
-
-3. **Technical Improvements**
-   - Redis caching
-   - WebSocket for real-time updates
-   - File upload for product images
-   - Payment gateway integration
-   - Multi-language support
-
-4. **Mobile App**
-   - React Native mobile application
-   - Push notifications
-   - Offline mode
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- FastAPI documentation and community
-- Next.js documentation and examples
-- React Testing Library guidelines
-- Docker documentation
-- Claude AI for development assistance
-- Stack Overflow community
-
-## 📞 Contact
-
-- **Name**: [Your Name]
-- **Email**: [Your Email]
-- **GitHub**: [Your GitHub Profile]
-- **LinkedIn**: [Your LinkedIn] (optional)
-
----
-
-**Built with ❤️ using modern web technologies**
-
-For detailed setup instructions, see [FULLSTACK_SETUP.md](./FULLSTACK_SETUP.md)
-
-For admin features guide, see [ADMIN_FEATURES_GUIDE.md](./ADMIN_FEATURES_GUIDE.md)
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
