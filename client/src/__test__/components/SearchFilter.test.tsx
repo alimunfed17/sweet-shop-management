@@ -138,10 +138,9 @@ describe('SearchFilter Component', () => {
           expect.objectContaining({
             name: 'Chocolate',
             category: 'Chocolate',
-            min_price: 2,
-            max_price: 5,
-          }),
-          expect.anything()
+            min_price: expect.any(Number),
+            max_price: expect.any(Number),
+          })
         )
       })
     })

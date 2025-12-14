@@ -22,8 +22,8 @@ export default function SearchFilter({ onSearch, onReset }: SearchFilterProps) {
       onSubmit={handleSubmit((data) => {
         const cleanedData: SearchFilters = {
           ...data,
-          min_price: isNaN(data.min_price as number) ? undefined : data.min_price,
-          max_price: isNaN(data.max_price as number) ? undefined : data.max_price,
+          min_price: data.min_price ? Number(data.min_price) : undefined,
+          max_price: data.max_price ? Number(data.max_price) : undefined,
         };
         onSearch(cleanedData);
       })}
@@ -42,10 +42,7 @@ export default function SearchFilter({ onSearch, onReset }: SearchFilterProps) {
         />
 
         <div>
-          <label 
-            htmlFor="category"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
             Category
           </label>
           <select
