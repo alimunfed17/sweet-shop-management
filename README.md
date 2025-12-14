@@ -371,12 +371,7 @@ open coverage/lcov-report/index.html
 
 ### Test Reports
 
-Detailed test reports are available in the `test-reports/` directory:
-
-- **Backend Test Report**: `test-reports/backend-test-report.html`
-- **Backend Coverage**: `test-reports/backend-coverage/`
-- **Frontend Test Results**: `test-reports/frontend-test-results.json`
-- **Frontend Coverage**: `test-reports/frontend-coverage/`
+- Detailed test reports are available in the `test-reports/` directory [test-reports](./test-reports/)
 
 ### What's Tested
 
