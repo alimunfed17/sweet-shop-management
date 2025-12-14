@@ -18,7 +18,17 @@ export default function SearchFilter({ onSearch, onReset }: SearchFilterProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSearch)} className="bg-white p-6 rounded-xl shadow-md">
+    <form
+      onSubmit={handleSubmit((data) => {
+        const cleanedData: SearchFilters = {
+          ...data,
+          min_price: isNaN(data.min_price as number) ? undefined : data.min_price,
+          max_price: isNaN(data.max_price as number) ? undefined : data.max_price,
+        };
+        onSearch(cleanedData);
+      })}
+      className="bg-white p-6 rounded-xl shadow-md"
+    >
       <div className="flex items-center gap-2 mb-4">
         <Search className="w-5 h-5 text-primary-600" />
         <h2 className="text-lg font-semibold text-gray-900">Search & Filter</h2>
